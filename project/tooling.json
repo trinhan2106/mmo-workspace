@@ -1,0 +1,14 @@
+{
+  "spec_kit": {
+    "repository": "https://github.com/github/spec-kit",
+    "version": "1.3.3",
+    "tag": "v1.3.3",
+    "commit": "79cb423c37bb9394bab7a66063c27dfa80b72fba",
+    "integration": "codex",
+    "script": "ps",
+    "events": false,
+    "extensions": ["github"]
+  },
+  "repo_tooling_python": "3.12",
+  "app_stack": ["Rust", "Tauri 2", "TypeScript", "SQLite"]
+}

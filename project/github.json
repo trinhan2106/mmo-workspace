@@ -1,0 +1,93 @@
+{
+  "repository": "trinhan2106/mmo-workspace",
+  "project": {
+    "owner": "trinhan2106",
+    "number": 4,
+    "id": "PVT_kwHODB9dSs4Bq_yu",
+    "url": "https://github.com/users/trinhan2106/projects/4"
+  },
+  "tasks": {
+    "T001": {
+      "issue_number": 1,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/1",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgYWo"
+    },
+    "T002": {
+      "issue_number": 2,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/2",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgYfQ"
+    },
+    "T003": {
+      "issue_number": 3,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/3",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgYms"
+    },
+    "T004": {
+      "issue_number": 4,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/4",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgYuA"
+    },
+    "T005": {
+      "issue_number": 5,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/5",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgY2Q"
+    },
+    "T006": {
+      "issue_number": 6,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/6",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgY80"
+    },
+    "T007": {
+      "issue_number": 7,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/7",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZGE"
+    },
+    "T008": {
+      "issue_number": 8,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/8",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZOE"
+    },
+    "T009": {
+      "issue_number": 9,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/9",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZXk"
+    },
+    "T010": {
+      "issue_number": 10,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/10",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZgo"
+    },
+    "T011": {
+      "issue_number": 11,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/11",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZrg"
+    },
+    "T012": {
+      "issue_number": 12,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/12",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZ0w"
+    },
+    "T013": {
+      "issue_number": 13,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/13",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgZ8M"
+    },
+    "T014": {
+      "issue_number": 14,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/14",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgaDU"
+    },
+    "T015": {
+      "issue_number": 15,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/15",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgaKw"
+    },
+    "T016": {
+      "issue_number": 16,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/16",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHgaRc"
+    }
+  },
+  "last_sync": "2026-11-10T13:07:37.012261+00:00",
+  "synced_revision": 2
+}
