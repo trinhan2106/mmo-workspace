@@ -8,6 +8,8 @@
 4. **M3:** Guest browser, mailbox provider and sample module. Test permissions, version mismatch, disconnect/restart. Refine Gmail/ChatGPT/Gemini in separate specs.
 5. **Release:** Local packaging, clean suitable Windows machine, manual QA and documented limitations.
 
+Future direction: [Feature 003 — commercial tool packaging](../003-commercial-tool-packaging/spec.md), T020 after T016. Plan standalone tools/selected module bundles through a reusable core and product manifest; development tools and private runtime data stay outside customer exports. This does not replace the current isolated-workspace MVP.
+
 ## Intended layout (only create when needed)
 
 ```text

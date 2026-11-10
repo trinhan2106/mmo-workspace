@@ -1,6 +1,6 @@
 # Tasks — generated from project/tasks.json
 
-Registry revision: 11. Do not edit this checklist directly.
+Registry revision: 15. Do not edit this checklist directly.
 
 - [x] T017 Consistent coding standards and project-local byPass profiles
   - State: Done; dependencies: T001; requirements: FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007

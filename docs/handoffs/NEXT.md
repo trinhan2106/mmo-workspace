@@ -1,6 +1,6 @@
 # Prompt cho chat kế tiếp
 
-Registry revision: 11. Sinh tự động; đọc lại state trước khi làm.
+Registry revision: 15. Sinh tự động; đọc lại state trước khi làm.
 
 ```text
 Tiếp tục dự án tại D:/MMO-Plus-UPI/mmo-workspace. Đọc AGENTS.md và docs/START-HERE.md; dùng skill workspace-handoff.

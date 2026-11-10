@@ -96,8 +96,18 @@
       "issue_number": 19,
       "url": "https://github.com/trinhan2106/mmo-workspace/issues/19",
       "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHg-m4"
+    },
+    "T019": {
+      "issue_number": 20,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/20",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHhMs0"
+    },
+    "T020": {
+      "issue_number": 21,
+      "url": "https://github.com/trinhan2106/mmo-workspace/issues/21",
+      "item_id": "PVTI_lAHODB9dSs4Bq_yuzhHhM0s"
     }
   },
-  "last_sync": "2026-11-10T13:39:28.509259+00:00",
-  "synced_revision": 11
+  "last_sync": "2026-11-10T13:50:14.071524+00:00",
+  "synced_revision": 15
 }

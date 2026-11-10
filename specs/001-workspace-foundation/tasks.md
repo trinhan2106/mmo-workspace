@@ -1,6 +1,6 @@
 # Tasks — generated from project/tasks.json
 
-Registry revision: 11. Do not edit this checklist directly.
+Registry revision: 15. Do not edit this checklist directly.
 
 - [x] T001 Project foundation, Spec Kit and cross-chat workflow
   - State: Done; dependencies: none; requirements: FR-001, FR-002

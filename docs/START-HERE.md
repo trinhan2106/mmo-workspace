@@ -4,6 +4,8 @@ Mở đúng `D:/MMO-Plus-UPI/mmo-workspace` trong Codex. Python 3.12 + GitHub CL
 
 Mọi task code/docs đọc `jailbreak/byPass/README.md` và `docs/CODE-STANDARDS.md`. byPass gọi engine composition nguyên bản ColdCoffee để chuẩn bị context; full source và home cài riêng giữ trong repo. Setup lần đầu: `scripts/setup-bypass.ps1` và `scripts/setup-quality.ps1`. Không suy rằng app/VM hoặc cấu hình Codex đang mở đã được thay đổi bởi bước này.
 
+Quy tắc dùng engine gốc áp dụng cả task implementation/spec/nghiên cứu/tài liệu: compose brief, đọc output và ghi command/profile/pin trong evidence; lỗi engine phải báo rõ. Định hướng tương lai là [đóng gói tool để bán](../specs/003-commercial-tool-packaging/spec.md), hiện được lưu thành task thiết kế T020 sau MVP, không phải tính năng đã triển khai.
+
 ## Nguồn sự thật
 
 | Dữ liệu | Nơi quản lý |

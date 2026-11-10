@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 11,
+  "revision": 15,
   "tasks": [
     {
       "id": "T001",
@@ -372,6 +372,57 @@
       "blocked_reason": "Defender blocked bundled samples during full seat install; no project guest has been accepted yet",
       "next_action": "Complete T009 guest boundary acceptance, then reassess the original full bundle with protection intact; preserve local failure evidence until resolved",
       "evidence": "docs/handoffs/T018.md"
+    },
+    {
+      "id": "T019",
+      "title": "Record mandatory byPass task preparation and future commercial packaging direction",
+      "status": "done",
+      "depends_on": [
+        "T017"
+      ],
+      "spec": "specs/003-commercial-tool-packaging/spec.md",
+      "plan": "specs/003-commercial-tool-packaging/plan.md",
+      "requirements": [
+        "FR-008",
+        "FR-009"
+      ],
+      "acceptance": [
+        "Project guidance requires original pinned gpt6-Astra composition through byPass with actual command/profile evidence",
+        "Commercial tool packaging requirements and future T020 design task are recorded without implementing sales or activation services",
+        "Generated state and GitHub mirror retain T002 next and T018 blocked"
+      ],
+      "owner": "chat-commercial-direction-20261110",
+      "branch": "chore/project-foundation",
+      "evidence": "docs/handoffs/T019.md",
+      "checks": "Original writing composition verified/read; registry artifacts and edited skill validation; documentation-only change",
+      "summary": "Required original byPass composition evidence for project work and registered future commercial packaging design in T020"
+    },
+    {
+      "id": "T020",
+      "title": "Specify commercial standalone tool and module-bundle packaging",
+      "status": "todo",
+      "depends_on": [
+        "T016",
+        "T019"
+      ],
+      "spec": "specs/003-commercial-tool-packaging/spec.md",
+      "plan": "specs/003-commercial-tool-packaging/plan.md",
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-008"
+      ],
+      "acceptance": [
+        "Confirm the first product/package form and specify a versioned product manifest reusing the common core",
+        "Define dependency/notice inventory and a packaging allowlist excluding dev tools, credentials, profiles and private runtime data",
+        "Specify versioning, install/update/uninstall acceptance, signing research and optional activation choices without implementing payment services",
+        "Register bounded implementation tasks after design; do not report roadmap work as a shipped sales feature"
+      ]
     }
   ]
 }

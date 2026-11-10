@@ -5,7 +5,7 @@ description: Start, resume or hand off a task in mmo-workspace using its registr
 
 # Workspace handoff
 
-Read `docs/START-HERE.md`; run `py -3.12 scripts/project.py status` from product root. Read the task spec/plan/evidence before coding. Registry lifecycle is canonical; upstream Spec Kit checkboxes and GitHub are projections. Project coding/writing uses the byPass entry and `docs/CODE-STANDARDS.md`; prepare task context through the pinned original composition engine when local setup is available, keeping higher-priority requirements intact.
+Read `docs/START-HERE.md`; run `py -3.12 scripts/project.py status` from product root. Read the task spec/plan/evidence before coding. Registry lifecycle is canonical; upstream Spec Kit checkboxes and GitHub are projections. Project work uses the byPass entry and `docs/CODE-STANDARDS.md`; prepare and read task context through the pinned original gpt6-Astra composition engine, recording command/profile/source pin in evidence. If unavailable, report the tooling condition honestly and preserve the existing full-bundle blocker.
 
 Claim a dependency-ready task: `project.py start <ID> --owner <session-label> --revision <current>`. Active tasks may only continue under their recorded owner when this is an authorized handoff; otherwise report the owner. Do not expire/steal claims or bypass them with another checkout. Keep IDs globally unique when adding Spec Kit tasks.
 

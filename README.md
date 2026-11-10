@@ -9,6 +9,7 @@
 - [Spec](specs/001-workspace-foundation/spec.md) · [Plan](specs/001-workspace-foundation/plan.md)
 - [Quyết định](docs/decisions.md) · [Nguồn tái sử dụng](references/README.md)
 - [Chuẩn code chung](docs/CODE-STANDARDS.md) · [byPass / nguồn ColdCoffee local](jailbreak/byPass/README.md) — composition hoạt động; full bundle đang bị chặn ở T018
+- [Định hướng đóng gói tool để bán](specs/003-commercial-tool-packaging/spec.md) — roadmap T020, chưa triển khai
 
 ```powershell
 py -3.12 scripts/project.py status

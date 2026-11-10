@@ -2,6 +2,8 @@
 
 Mọi task code/docs của repo đọc entry này. Profile coding dùng chung `docs/CODE-STANDARDS.md`; profile writing phục vụ bài viết tự nhiên. Đây là context tác vụ theo project; không thay quyền của tool/model hoặc bỏ bước nghiệm thu.
 
+Theo yêu cầu xác nhận 10/11/2026, mọi task triển khai/spec/nghiên cứu/tài liệu phải dùng composition nguyên bản ở bước chuẩn bị brief và đọc output. Evidence ghi command, profile và commit upstream `3249afce6b853ff2f2133e016b223db2cf38b087`. Nếu thiếu setup/lỗi thực thi, báo và xử lý đúng điều kiện đó, không âm thầm thay engine. Yêu cầu này dùng phần composition đang hoạt động; không đổi trạng thái full-bundle T018 hay cấu hình Codex hiện tại.
+
 ## Setup và kiểm tra
 
 ```powershell
