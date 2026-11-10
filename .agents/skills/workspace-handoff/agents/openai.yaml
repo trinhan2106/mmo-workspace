@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workspace handoff"
+  short_description: "Giữ task và prompt tiếp nối giữa các chat"
+  default_prompt: "Dùng $workspace-handoff để đọc trạng thái mmo-workspace, làm đúng task và tạo prompt cho chat kế tiếp."

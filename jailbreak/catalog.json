@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "name": "byPass",
+  "default_profile": "coding",
+  "source": {
+    "repository": "3641397194-wq/gpt6-Astra",
+    "commit": "3249afce6b853ff2f2133e016b223db2cf38b087",
+    "release": "v3.2.0-preview.9",
+    "checkout": "jailbreak/gpt6-Astra",
+    "codex_home": "jailbreak/local/codex-home",
+    "root_license": "MIT",
+    "component_licenses": "See upstream THIRD_PARTY_NOTICES.md; component licenses retained"
+  },
+  "profiles": [
+    {"id": "coding", "path": "jailbreak/byPass/profiles/coding.md", "purpose": "Consistent maintainable code and verified handoff"},
+    {"id": "writing", "path": "jailbreak/byPass/profiles/writing.md", "purpose": "Natural Vietnamese prose with factual grounding"}
+  ]
+}

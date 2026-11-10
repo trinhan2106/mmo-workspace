@@ -1,0 +1,15 @@
+.git/
+.reference/
+.tools/
+.work/
+.specify/
+.agents/skills/speckit-*/
+jailbreak/gpt6-Astra/
+jailbreak/local/
+node_modules/
+target/
+dist/
+project/tasks.json
+project/github.json
+specs/*/tasks.md
+docs/handoffs/NEXT.md

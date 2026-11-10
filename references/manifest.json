@@ -1,0 +1,69 @@
+{
+  "checked_on": "2026-11-10",
+  "repositories": [
+    {
+      "name": "spec-kit",
+      "repository": "github/spec-kit",
+      "commit": "79cb423c37bb9394bab7a66063c27dfa80b72fba",
+      "license": "MIT",
+      "role": "Installed project specification tooling",
+      "local": true
+    },
+    {
+      "name": "tauri",
+      "repository": "tauri-apps/tauri",
+      "commit": "fe5cf6fd23ff65c65ba5ae54eae3e4a6d6bfb52e",
+      "license": "MIT OR Apache-2.0",
+      "role": "Desktop shell candidate; use stable crate/package releases, not this dev-head as a production dependency",
+      "local": false
+    },
+    {
+      "name": "windows-rs",
+      "repository": "microsoft/windows-rs",
+      "commit": "0cfb708054687e5bc32c596a98cfcf1395344eab",
+      "license": "MIT OR Apache-2.0",
+      "role": "Windows APIs from Rust; exact APIs subject to adapter PoC",
+      "local": true
+    },
+    {
+      "name": "virtualization-docs",
+      "repository": "MicrosoftDocs/Virtualization-Documentation",
+      "commit": "b9a2dc8896baacb401ab7dfef2e7e06e2216e4da",
+      "license": "CC-BY-4.0 docs; MIT code samples",
+      "role": "Hyper-V documentation/sample reference, not production-ready app code",
+      "local": true
+    },
+    {
+      "name": "chromiumoxide",
+      "repository": "mattsse/chromiumoxide",
+      "commit": "afcc3a4313f2087249b4490d94e54bf8e3bfaccf",
+      "license": "MIT OR Apache-2.0",
+      "role": "Candidate Rust CDP browser worker in guest",
+      "local": false
+    },
+    {
+      "name": "async-imap",
+      "repository": "chatmail/async-imap",
+      "commit": "12879bfacd0aed311b77c7a6099ca181141d93b3",
+      "license": "MIT OR Apache-2.0",
+      "role": "Authorized mailbox provider candidate",
+      "local": false
+    },
+    {
+      "name": "oauth2-rs",
+      "repository": "ramosbugs/oauth2-rs",
+      "commit": "72ce74401c26eb4dc85dcbfde587bbcfc149e3ae",
+      "license": "MIT OR Apache-2.0",
+      "role": "OAuth authorization/refresh provider candidate",
+      "local": false
+    },
+    {
+      "name": "playwright",
+      "repository": "microsoft/playwright",
+      "commit": "452a71b174f4f52fd3ba4c99b6eb6ee52d488c61",
+      "license": "Apache-2.0",
+      "role": "Alternative Node guest-browser adapter and UI testing",
+      "local": false
+    }
+  ]
+}

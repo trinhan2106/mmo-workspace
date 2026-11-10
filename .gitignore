@@ -22,3 +22,53 @@ rustc-ice-*.txt
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Project-local tools and reference checkouts
+.tools/
+.reference/
+.work/
+__pycache__/
+*.pyc
+
+# Frontend dependencies/build output
+node_modules/
+dist/
+
+# Runtime data and secrets
+.env
+.env.*
+!.env.example
+runtime/
+profiles/
+secrets/
+logs/
+*.log
+*.vhd
+*.vhdx
+*.avhdx
+*.vmdk
+*.vdi
+*.qcow2
+*.iso
+*.pfx
+*.p12
+*.key
+
+# Local databases and agent authentication/session data
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+.codex/auth.json
+.codex/sessions/
+.codex/history.jsonl
+.codex/log/
+
+# Third-party prompt/tool source: local checkout, never auto-loaded or vendored
+jailbreak/gpt6-Astra/
+jailbreak/local/
+!jailbreak/byPass/profiles/
+!jailbreak/byPass/profiles/*.md

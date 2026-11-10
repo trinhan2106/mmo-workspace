@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "revision": 15,
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Project foundation, Spec Kit and cross-chat workflow",
+      "status": "done",
+      "owner": "chat-foundation-20261110",
+      "branch": "chore/project-foundation",
+      "depends_on": [],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-001",
+        "FR-002"
+      ],
+      "acceptance": [
+        "Pinned local Spec Kit with Codex skills",
+        "Registry, generated handoff, dependency and claim checks pass",
+        "GitHub project/issues linked and repeated sync creates no duplicates",
+        "Reference catalog and fresh-checkout bootstrap documented"
+      ],
+      "evidence": "docs/handoffs/T001.md",
+      "checks": "21 unit tests passed; Spec Kit/skill checks passed; repeat GitHub sync zero changes; artifacts consistent",
+      "summary": "Initialized Spec Kit, 16-task registry, GitHub Project and cross-chat handoffs"
+    },
+    {
+      "id": "T002",
+      "title": "Read-only Windows and Rust/Tauri toolchain preflight",
+      "status": "todo",
+      "depends_on": [
+        "T001",
+        "T017"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-003",
+        "FR-004"
+      ],
+      "acceptance": [
+        "Record Rust/Cargo, MSVC/linker, Windows SDK, WebView2 and Node availability without secrets",
+        "Record virtualization/edition/RAM facts or permission-denied as unknown",
+        "Document exact missing prerequisites, install choices/cost and first UI-test command; no admin changes or reboot"
+      ]
+    },
+    {
+      "id": "T003",
+      "title": "Scaffold minimal Rust/Tauri desktop shell",
+      "status": "todo",
+      "depends_on": [
+        "T002"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-003"
+      ],
+      "acceptance": [
+        "Refine shell plan; verify current official APIs and pin dependencies/lockfiles",
+        "Minimal window launches with environment/module/job placeholders clearly marked unavailable",
+        "Rust and TypeScript relevant build/type checks pass; record actual launch evidence"
+      ]
+    },
+    {
+      "id": "T004",
+      "title": "Versioned module manifest and worker protocol contracts",
+      "status": "todo",
+      "depends_on": [
+        "T003"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-006",
+        "FR-008"
+      ],
+      "acceptance": [
+        "Detailed contracts spec includes lifecycle validate/plan/run/checkpoint/resume/rollback/dispose where supported",
+        "Capability/version/schema rejection tested with fixtures",
+        "Specify secret references and redaction rather than real credentials"
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "SQLite job lifecycle and recovery core",
+      "status": "todo",
+      "depends_on": [
+        "T004"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-003",
+        "FR-006",
+        "FR-007"
+      ],
+      "acceptance": [
+        "Persist migrations/job states/events with request IDs and scoped resource locks",
+        "Timeout/cancel/crash/retry fixture checks prevent duplicate external effects",
+        "No module writes internal core tables directly"
+      ]
+    },
+    {
+      "id": "T006",
+      "title": "Read-only Hyper-V environment adapter preflight",
+      "status": "todo",
+      "depends_on": [
+        "T003"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-004",
+        "FR-005",
+        "FR-010"
+      ],
+      "acceptance": [
+        "Refine environment adapter interface and report unsupported/unknown conditions",
+        "Read configuration without enabling Hyper-V, modifying switches or rebooting",
+        "Guest ownership/licensing and host integration settings documented"
+      ]
+    },
+    {
+      "id": "T007",
+      "title": "Persistent guest VM proof of concept and console",
+      "status": "todo",
+      "depends_on": [
+        "T004",
+        "T006"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-005",
+        "FR-010"
+      ],
+      "acceptance": [
+        "Resolve prerequisite/operator authorizations and licensed guest resources before system changes",
+        "Dedicated VM and harmless native/browser fixture run in guest; chosen console documented",
+        "No broad host share/clipboard/drive passthrough; actual settings and residual risks recorded"
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Guest worker transport and allowlisted fixture runtime",
+      "status": "todo",
+      "depends_on": [
+        "T005",
+        "T007"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-006",
+        "FR-007",
+        "FR-008"
+      ],
+      "acceptance": [
+        "Refine authenticated/scoped host-guest transport and message limits",
+        "Allowlisted fixture job works through core; no arbitrary host shell",
+        "Disconnect/cancel/version mismatch tests pass with redacted evidence"
+      ]
+    },
+    {
+      "id": "T009",
+      "title": "Host/guest boundary and recovery acceptance",
+      "status": "todo",
+      "depends_on": [
+        "T008"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-010"
+      ],
+      "acceptance": [
+        "Harmless tests show guest cannot access unshared host fixture paths or personal profiles",
+        "Clipboard/shares/network exposure/secret handling checked with no real credentials",
+        "Restart/checkpoint/cancel outcomes and remaining limitations documented"
+      ]
+    },
+    {
+      "id": "T010",
+      "title": "Guest browser adapter and profile fixtures",
+      "status": "todo",
+      "depends_on": [
+        "T009"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-008"
+      ],
+      "acceptance": [
+        "Choose chromiumoxide or Playwright after a bounded fixture comparison",
+        "Browser profiles live in guest; debugging endpoint not publicly exposed",
+        "Local test page run/cancel and profile separation verified; no live account automation"
+      ]
+    },
+    {
+      "id": "T011",
+      "title": "Mailbox/OAuth provider with mock integration",
+      "status": "todo",
+      "depends_on": [
+        "T009"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-008"
+      ],
+      "acceptance": [
+        "Resource provider interface separates mailbox authorization from platform modules",
+        "Mock token refresh/expiry/cancel/redaction tests pass",
+        "Real mailbox setup remains explicit and minimum-scope; no embedded accounts/tokens"
+      ]
+    },
+    {
+      "id": "T012",
+      "title": "Sample module SDK conformance and workflow",
+      "status": "todo",
+      "depends_on": [
+        "T010",
+        "T011"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-006",
+        "FR-007",
+        "FR-008"
+      ],
+      "acceptance": [
+        "Add fixture module without changing core for its platform",
+        "Contract/version/capability and recovery conformance tests pass",
+        "Document adding/upgrading/removing a module with sample data"
+      ]
+    },
+    {
+      "id": "T013",
+      "title": "Specify authorized Gmail module MVP",
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-009"
+      ],
+      "acceptance": [
+        "Dedicated feature spec defines mailbox/profile management and any allowed signup workflow",
+        "Manual verification stops and provider conditions documented",
+        "Add bounded implementation tasks with new IDs; this discovery task creates no real accounts"
+      ]
+    },
+    {
+      "id": "T014",
+      "title": "Specify ChatGPT registration and observed offer states",
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-009",
+        "FR-010"
+      ],
+      "acceptance": [
+        "Dedicated feature spec separates signup/login, observed offer, payment and actual subscription",
+        "Check official conditions; no eligibility/verification/limit bypass or guaranteed trial",
+        "New implementation task IDs only after authorized workflow is defined; no account/payment run here"
+      ]
+    },
+    {
+      "id": "T015",
+      "title": "Specify Gemini module MVP",
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-009"
+      ],
+      "acceptance": [
+        "Dedicated feature spec defines authorized Gemini workflow and observed states",
+        "Reuse provider/SDK contracts; document provider-specific terms and manual steps",
+        "Register future implementation tasks; no guaranteed promotion or real account action in discovery"
+      ]
+    },
+    {
+      "id": "T016",
+      "title": "Package isolated-workspace MVP and manual QA guide",
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "spec": "specs/001-workspace-foundation/spec.md",
+      "plan": "specs/001-workspace-foundation/plan.md",
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-010"
+      ],
+      "acceptance": [
+        "Build installable local package with version and prerequisite checks",
+        "Clean suitable Windows-machine test evidence; disclose guest license/signing costs if applicable",
+        "Backup/update/uninstall and limitations documented; platform discovery not misrepresented as completed modules"
+      ]
+    },
+    {
+      "id": "T017",
+      "title": "Consistent coding standards and project-local byPass profiles",
+      "status": "done",
+      "depends_on": [
+        "T001"
+      ],
+      "spec": "specs/002-coding-rules-bypass/spec.md",
+      "plan": "specs/002-coding-rules-bypass/plan.md",
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007"
+      ],
+      "acceptance": [
+        "Shared code standard and editor/formatter settings are loaded by AGENTS and handoff",
+        "Pinned gpt6-Astra source exists under ignored jailbreak folder, with provenance and actual behavior documented",
+        "Original composition verified with project profiles; full bundle installation result recorded honestly and unresolved work tracked separately in T018",
+        "Relevant checks pass; registry/GitHub mirror and next T002 prompt updated"
+      ],
+      "owner": "chat-rules-bypass-20261110",
+      "branch": "chore/project-foundation",
+      "evidence": "docs/handoffs/T017.md",
+      "checks": "23 Python + 3 Node tests; Ruff/Prettier; skill/catalog checks; original composition passed; full install FAILED and tracked T018",
+      "summary": "Added shared coding standards, full upstream source/dependencies and original byPass composition; complete bundle remains blocked by Defender in T018"
+    },
+    {
+      "id": "T018",
+      "title": "Assess complete ColdCoffee bundle inside the prepared guest VM",
+      "status": "blocked",
+      "depends_on": [
+        "T009",
+        "T017"
+      ],
+      "spec": "specs/002-coding-rules-bypass/spec.md",
+      "plan": "specs/002-coding-rules-bypass/plan.md",
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-007"
+      ],
+      "acceptance": [
+        "Prepare a dedicated guest with no real credentials or broad host shares; preserve full source and licenses",
+        "Investigate Defender detections in bundled reference samples without disabling protection or excluding files to obtain a pass",
+        "Every originally planned resource verifies in the authorized suitable guest before claiming full deployment; unresolved protection blocks remain blocked",
+        "Do not activate a partial installation or claim that the current Codex session has switched to upstream instructions"
+      ],
+      "blocked_reason": "Defender blocked bundled samples during full seat install; no project guest has been accepted yet",
+      "next_action": "Complete T009 guest boundary acceptance, then reassess the original full bundle with protection intact; preserve local failure evidence until resolved",
+      "evidence": "docs/handoffs/T018.md"
+    },
+    {
+      "id": "T019",
+      "title": "Record mandatory byPass task preparation and future commercial packaging direction",
+      "status": "done",
+      "depends_on": [
+        "T017"
+      ],
+      "spec": "specs/003-commercial-tool-packaging/spec.md",
+      "plan": "specs/003-commercial-tool-packaging/plan.md",
+      "requirements": [
+        "FR-008",
+        "FR-009"
+      ],
+      "acceptance": [
+        "Project guidance requires original pinned gpt6-Astra composition through byPass with actual command/profile evidence",
+        "Commercial tool packaging requirements and future T020 design task are recorded without implementing sales or activation services",
+        "Generated state and GitHub mirror retain T002 next and T018 blocked"
+      ],
+      "owner": "chat-commercial-direction-20261110",
+      "branch": "chore/project-foundation",
+      "evidence": "docs/handoffs/T019.md",
+      "checks": "Original writing composition verified/read; registry artifacts and edited skill validation; documentation-only change",
+      "summary": "Required original byPass composition evidence for project work and registered future commercial packaging design in T020"
+    },
+    {
+      "id": "T020",
+      "title": "Specify commercial standalone tool and module-bundle packaging",
+      "status": "todo",
+      "depends_on": [
+        "T016",
+        "T019"
+      ],
+      "spec": "specs/003-commercial-tool-packaging/spec.md",
+      "plan": "specs/003-commercial-tool-packaging/plan.md",
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-008"
+      ],
+      "acceptance": [
+        "Confirm the first product/package form and specify a versioned product manifest reusing the common core",
+        "Define dependency/notice inventory and a packaging allowlist excluding dev tools, credentials, profiles and private runtime data",
+        "Specify versioning, install/update/uninstall acceptance, signing research and optional activation choices without implementing payment services",
+        "Register bounded implementation tasks after design; do not report roadmap work as a shipped sales feature"
+      ]
+    }
+  ]
+}

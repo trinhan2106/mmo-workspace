@@ -1,0 +1,86 @@
+# Tasks — generated from project/tasks.json
+
+Registry revision: 15. Do not edit this checklist directly.
+
+- [x] T001 Project foundation, Spec Kit and cross-chat workflow
+  - State: Done; dependencies: none; requirements: FR-001, FR-002
+  - Acceptance: Pinned local Spec Kit with Codex skills
+  - Acceptance: Registry, generated handoff, dependency and claim checks pass
+  - Acceptance: GitHub project/issues linked and repeated sync creates no duplicates
+  - Acceptance: Reference catalog and fresh-checkout bootstrap documented
+  - Evidence: `docs/handoffs/T001.md`
+- [ ] T002 Read-only Windows and Rust/Tauri toolchain preflight
+  - State: Ready; dependencies: T001, T017; requirements: FR-003, FR-004
+  - Acceptance: Record Rust/Cargo, MSVC/linker, Windows SDK, WebView2 and Node availability without secrets
+  - Acceptance: Record virtualization/edition/RAM facts or permission-denied as unknown
+  - Acceptance: Document exact missing prerequisites, install choices/cost and first UI-test command; no admin changes or reboot
+- [ ] T003 Scaffold minimal Rust/Tauri desktop shell
+  - State: Todo; dependencies: T002; requirements: FR-003
+  - Acceptance: Refine shell plan; verify current official APIs and pin dependencies/lockfiles
+  - Acceptance: Minimal window launches with environment/module/job placeholders clearly marked unavailable
+  - Acceptance: Rust and TypeScript relevant build/type checks pass; record actual launch evidence
+- [ ] T004 Versioned module manifest and worker protocol contracts
+  - State: Todo; dependencies: T003; requirements: FR-006, FR-008
+  - Acceptance: Detailed contracts spec includes lifecycle validate/plan/run/checkpoint/resume/rollback/dispose where supported
+  - Acceptance: Capability/version/schema rejection tested with fixtures
+  - Acceptance: Specify secret references and redaction rather than real credentials
+- [ ] T005 SQLite job lifecycle and recovery core
+  - State: Todo; dependencies: T004; requirements: FR-003, FR-006, FR-007
+  - Acceptance: Persist migrations/job states/events with request IDs and scoped resource locks
+  - Acceptance: Timeout/cancel/crash/retry fixture checks prevent duplicate external effects
+  - Acceptance: No module writes internal core tables directly
+- [ ] T006 Read-only Hyper-V environment adapter preflight
+  - State: Todo; dependencies: T003; requirements: FR-004, FR-005, FR-010
+  - Acceptance: Refine environment adapter interface and report unsupported/unknown conditions
+  - Acceptance: Read configuration without enabling Hyper-V, modifying switches or rebooting
+  - Acceptance: Guest ownership/licensing and host integration settings documented
+- [ ] T007 Persistent guest VM proof of concept and console
+  - State: Todo; dependencies: T004, T006; requirements: FR-005, FR-010
+  - Acceptance: Resolve prerequisite/operator authorizations and licensed guest resources before system changes
+  - Acceptance: Dedicated VM and harmless native/browser fixture run in guest; chosen console documented
+  - Acceptance: No broad host share/clipboard/drive passthrough; actual settings and residual risks recorded
+- [ ] T008 Guest worker transport and allowlisted fixture runtime
+  - State: Todo; dependencies: T005, T007; requirements: FR-006, FR-007, FR-008
+  - Acceptance: Refine authenticated/scoped host-guest transport and message limits
+  - Acceptance: Allowlisted fixture job works through core; no arbitrary host shell
+  - Acceptance: Disconnect/cancel/version mismatch tests pass with redacted evidence
+- [ ] T009 Host/guest boundary and recovery acceptance
+  - State: Todo; dependencies: T008; requirements: FR-005, FR-006, FR-007, FR-010
+  - Acceptance: Harmless tests show guest cannot access unshared host fixture paths or personal profiles
+  - Acceptance: Clipboard/shares/network exposure/secret handling checked with no real credentials
+  - Acceptance: Restart/checkpoint/cancel outcomes and remaining limitations documented
+- [ ] T010 Guest browser adapter and profile fixtures
+  - State: Todo; dependencies: T009; requirements: FR-008
+  - Acceptance: Choose chromiumoxide or Playwright after a bounded fixture comparison
+  - Acceptance: Browser profiles live in guest; debugging endpoint not publicly exposed
+  - Acceptance: Local test page run/cancel and profile separation verified; no live account automation
+- [ ] T011 Mailbox/OAuth provider with mock integration
+  - State: Todo; dependencies: T009; requirements: FR-008
+  - Acceptance: Resource provider interface separates mailbox authorization from platform modules
+  - Acceptance: Mock token refresh/expiry/cancel/redaction tests pass
+  - Acceptance: Real mailbox setup remains explicit and minimum-scope; no embedded accounts/tokens
+- [ ] T012 Sample module SDK conformance and workflow
+  - State: Todo; dependencies: T010, T011; requirements: FR-006, FR-007, FR-008
+  - Acceptance: Add fixture module without changing core for its platform
+  - Acceptance: Contract/version/capability and recovery conformance tests pass
+  - Acceptance: Document adding/upgrading/removing a module with sample data
+- [ ] T013 Specify authorized Gmail module MVP
+  - State: Todo; dependencies: T012; requirements: FR-009
+  - Acceptance: Dedicated feature spec defines mailbox/profile management and any allowed signup workflow
+  - Acceptance: Manual verification stops and provider conditions documented
+  - Acceptance: Add bounded implementation tasks with new IDs; this discovery task creates no real accounts
+- [ ] T014 Specify ChatGPT registration and observed offer states
+  - State: Todo; dependencies: T012; requirements: FR-009, FR-010
+  - Acceptance: Dedicated feature spec separates signup/login, observed offer, payment and actual subscription
+  - Acceptance: Check official conditions; no eligibility/verification/limit bypass or guaranteed trial
+  - Acceptance: New implementation task IDs only after authorized workflow is defined; no account/payment run here
+- [ ] T015 Specify Gemini module MVP
+  - State: Todo; dependencies: T012; requirements: FR-009
+  - Acceptance: Dedicated feature spec defines authorized Gemini workflow and observed states
+  - Acceptance: Reuse provider/SDK contracts; document provider-specific terms and manual steps
+  - Acceptance: Register future implementation tasks; no guaranteed promotion or real account action in discovery
+- [ ] T016 Package isolated-workspace MVP and manual QA guide
+  - State: Todo; dependencies: T012; requirements: FR-003, FR-004, FR-005, FR-010
+  - Acceptance: Build installable local package with version and prerequisite checks
+  - Acceptance: Clean suitable Windows-machine test evidence; disclose guest license/signing costs if applicable
+  - Acceptance: Backup/update/uninstall and limitations documented; platform discovery not misrepresented as completed modules
