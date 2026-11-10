@@ -66,3 +66,9 @@ logs/
 .codex/sessions/
 .codex/history.jsonl
 .codex/log/
+
+# Third-party prompt/tool source: local checkout, never auto-loaded or vendored
+jailbreak/gpt6-Astra/
+jailbreak/local/
+!jailbreak/byPass/profiles/
+!jailbreak/byPass/profiles/*.md

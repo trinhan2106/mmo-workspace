@@ -1,63 +1,20 @@
 """Repository-local task lifecycle. Python stdlib only; no account/runtime actions."""
+
 from __future__ import annotations
 
 import argparse
 import copy
-from contextlib import contextmanager
-import json
-import os
-from pathlib import Path
 import re
-import socket
 import subprocess
 import sys
-import tempfile
+from pathlib import Path
+
+from repo_io import StateError, load_json, mutex, write_json, write_text
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = Path("project/tasks.json")
 STATUSES = {"todo", "in_progress", "blocked", "review", "done"}
 ACTIVE = {"in_progress", "review"}
-
-
-class StateError(ValueError):
-    pass
-
-
-def load_json(path):
-    return json.loads(Path(path).read_text(encoding="utf-8-sig"))
-
-
-def write_text(path, text):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temp = tempfile.mkstemp(prefix=".write-", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
-            stream.write(text)
-        os.replace(temp, path)
-    finally:
-        if os.path.exists(temp):
-            os.unlink(temp)
-
-
-def write_json(path, value):
-    write_text(path, json.dumps(value, indent=2, ensure_ascii=False) + "\n")
-
-
-@contextmanager
-def mutex(root):
-    path = root / ".work/registry.lock"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-    except FileExistsError as exc:
-        raise StateError(f"Registry locked: {path}. Inspect owner/process; no automatic takeover.") from exc
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as stream:
-            json.dump({"pid": os.getpid(), "host": socket.gethostname()}, stream)
-        yield
-    finally:
-        path.unlink()
 
 
 def local_file(root, value):
@@ -72,13 +29,19 @@ def local_file(root, value):
 
 
 def validate(state, root):
-    if state.get("schema_version") != 1 or type(state.get("revision")) is not int or state["revision"] < 1:
+    if (
+        state.get("schema_version") != 1
+        or type(state.get("revision")) is not int
+        or state["revision"] < 1
+    ):
         raise StateError("Invalid schema_version/revision")
     tasks = state.get("tasks")
     if not isinstance(tasks, list) or not tasks:
         raise StateError("Registry must contain tasks")
     ids = [t.get("id") for t in tasks]
-    if any(not isinstance(i, str) or not re.fullmatch(r"T\d{3,}", i) for i in ids) or len(set(ids)) != len(ids):
+    if any(not isinstance(i, str) or not re.fullmatch(r"T\d{3,}", i) for i in ids) or len(
+        set(ids)
+    ) != len(ids):
         raise StateError("Invalid or duplicate task IDs")
     by_id = {t["id"]: t for t in tasks}
     if sum(t.get("status") in ACTIVE for t in tasks) > 1:
@@ -90,23 +53,41 @@ def validate(state, root):
         for field in ("spec", "plan"):
             local_file(root, task.get(field))
         for field in ("acceptance", "requirements"):
-            if not isinstance(task.get(field), list) or not task[field] or any(not isinstance(s, str) or not s.strip() for s in task[field]):
+            if (
+                not isinstance(task.get(field), list)
+                or not task[field]
+                or any(not isinstance(s, str) or not s.strip() for s in task[field])
+            ):
                 raise StateError(f"{task_id}: {field} must be non-empty strings")
         spec_text = local_file(root, task["spec"]).read_text(encoding="utf-8-sig")
-        if any(not re.search(r"\b" + re.escape(req) + r"\b", spec_text) for req in task["requirements"]):
+        if any(
+            not re.search(r"\b" + re.escape(req) + r"\b", spec_text) for req in task["requirements"]
+        ):
             raise StateError(f"{task_id}: requirement missing from linked spec")
         deps = task.get("depends_on")
-        if not isinstance(deps, list) or any(not isinstance(d, str) or d not in by_id for d in deps) or len(deps) != len(set(deps)) or task_id in deps:
+        if (
+            not isinstance(deps, list)
+            or any(not isinstance(d, str) or d not in by_id for d in deps)
+            or len(deps) != len(set(deps))
+            or task_id in deps
+        ):
             raise StateError(f"{task_id}: invalid dependencies")
         if task["status"] in ACTIVE | {"done"} and any(by_id[d]["status"] != "done" for d in deps):
             raise StateError(f"{task_id}: unfinished dependency")
         if task["status"] in ACTIVE and (not task.get("owner") or not task.get("branch")):
             raise StateError(f"{task_id}: active task needs owner and branch")
-        if task["status"] == "blocked" and (not task.get("blocked_reason") or not task.get("next_action")):
+        if task["status"] == "blocked" and (
+            not task.get("blocked_reason") or not task.get("next_action")
+        ):
             raise StateError(f"{task_id}: blocker needs reason and next_action")
         if task["status"] == "done":
             evidence = local_file(root, task.get("evidence"))
-            if evidence.suffix != ".md" or not evidence.read_text(encoding="utf-8-sig").strip() or not task.get("checks") or not task.get("summary"):
+            if (
+                evidence.suffix != ".md"
+                or not evidence.read_text(encoding="utf-8-sig").strip()
+                or not task.get("checks")
+                or not task.get("summary")
+            ):
                 raise StateError(f"{task_id}: done requires Markdown evidence, checks and summary")
     visited, visiting = set(), set()
 
@@ -128,25 +109,44 @@ def validate(state, root):
 
 def ready_tasks(state):
     by_id = {t["id"]: t for t in state["tasks"]}
-    return [t for t in state["tasks"] if t["status"] == "todo" and all(by_id[d]["status"] == "done" for d in t["depends_on"])]
+    return [
+        t
+        for t in state["tasks"]
+        if t["status"] == "todo" and all(by_id[d]["status"] == "done" for d in t["depends_on"])
+    ]
 
 
 def next_task(state):
-    return next((t for t in state["tasks"] if t["status"] in ACTIVE), None) or next(iter(ready_tasks(state)), None)
+    return next((t for t in state["tasks"] if t["status"] in ACTIVE), None) or next(
+        iter(ready_tasks(state)), None
+    )
 
 
 def lifecycle(task, state):
-    names = {"todo": "Todo", "in_progress": "In progress", "review": "Review", "blocked": "Blocked", "done": "Done"}
+    names = {
+        "todo": "Todo",
+        "in_progress": "In progress",
+        "review": "Review",
+        "blocked": "Blocked",
+        "done": "Done",
+    }
     return "Ready" if task in ready_tasks(state) else names[task["status"]]
 
 
 def artifacts(state):
     result = {}
     for spec in sorted({t["spec"] for t in state["tasks"]}):
-        lines = ["# Tasks — generated from project/tasks.json", "", f"Registry revision: {state['revision']}. Do not edit this checklist directly.", ""]
+        lines = [
+            "# Tasks — generated from project/tasks.json",
+            "",
+            f"Registry revision: {state['revision']}. Do not edit this checklist directly.",
+            "",
+        ]
         for task in (t for t in state["tasks"] if t["spec"] == spec):
-            lines += [f"- [{'x' if task['status'] == 'done' else ' '}] {task['id']} {task['title']}",
-                      f"  - State: {lifecycle(task, state)}; dependencies: {', '.join(task['depends_on']) or 'none'}; requirements: {', '.join(task['requirements'])}"]
+            lines += [
+                f"- [{'x' if task['status'] == 'done' else ' '}] {task['id']} {task['title']}",
+                f"  - State: {lifecycle(task, state)}; dependencies: {', '.join(task['depends_on']) or 'none'}; requirements: {', '.join(task['requirements'])}",
+            ]
             lines += [f"  - Acceptance: {item}" for item in task["acceptance"]]
             if task.get("evidence"):
                 lines.append(f"  - Evidence: `{task['evidence']}`")
@@ -154,23 +154,50 @@ def artifacts(state):
                 lines.append(f"  - Blocker: {task['blocked_reason']}; next: {task['next_action']}")
         result[str(Path(spec).with_name("tasks.md")).replace("\\", "/")] = "\n".join(lines) + "\n"
     task = next_task(state)
-    lines = ["# Prompt cho chat kế tiếp", "", f"Registry revision: {state['revision']}. Sinh tự động; đọc lại state trước khi làm.", "", "```text",
-             "Tiếp tục dự án tại D:/MMO-Plus-UPI/mmo-workspace. Đọc AGENTS.md và docs/START-HERE.md; dùng skill workspace-handoff.",
-             "Chạy py -3.12 scripts/project.py status và đối chiếu registry hiện tại. Prompt cũ không thay trạng thái mới."]
+    lines = [
+        "# Prompt cho chat kế tiếp",
+        "",
+        f"Registry revision: {state['revision']}. Sinh tự động; đọc lại state trước khi làm.",
+        "",
+        "```text",
+        "Tiếp tục dự án tại D:/MMO-Plus-UPI/mmo-workspace. Đọc AGENTS.md và docs/START-HERE.md; dùng skill workspace-handoff.",
+        "Dùng entry byPass ở jailbreak/byPass/README.md và chuẩn code docs/CODE-STANDARDS.md; source/profile chỉ setup trong repo này.",
+        "Chạy py -3.12 scripts/project.py status và đối chiếu registry hiện tại. Prompt cũ không thay trạng thái mới.",
+    ]
     if task:
-        lines += [f"Task dự kiến: {task['id']} — {task['title']}. Đọc {task['spec']} và {task['plan']}, acceptance trong registry và docs/handoffs/{task['id']}.md nếu có."]
+        blocked = [item["id"] for item in state["tasks"] if item["status"] == "blocked"]
+        if blocked:
+            lines += [
+                f"Giữ các blocker hiện có: {', '.join(blocked)}. Đọc reason/next_action trong registry; không tự đánh dấu hoàn tất hoặc bỏ qua điều kiện."
+            ]
+        lines += [
+            f"Task dự kiến: {task['id']} — {task['title']}. Đọc {task['spec']} và {task['plan']}, acceptance trong registry và docs/handoffs/{task['id']}.md nếu có."
+        ]
         if task["status"] in ACTIVE:
-            lines += [f"Task đang {task['status']}, owner {task['owner']}, branch {task['branch']}. Đây là bàn giao tiếp tục task dở; không claim task khác hoặc chiếm owner không rõ tình trạng."]
+            lines += [
+                f"Task đang {task['status']}, owner {task['owner']}, branch {task['branch']}. Đây là bàn giao tiếp tục task dở; không claim task khác hoặc chiếm owner không rõ tình trạng."
+            ]
         else:
-            lines += [f"Nếu {task['id']} vẫn ready và chưa có task active, chọn branch phù hợp rồi claim bằng project.py start {task['id']} --owner <nhãn-chat-mới> --revision <revision-vừa-đọc>."]
-        lines += ["Chỉ làm task này, kiểm tra đúng phạm vi, cập nhật evidence/registry. Chạy render/check và sync GitHub khi có quyền; cuối chat trả prompt mới từ docs/handoffs/NEXT.md."]
+            lines += [
+                f"Nếu {task['id']} vẫn ready và chưa có task active, chọn branch phù hợp rồi claim bằng project.py start {task['id']} --owner <nhãn-chat-mới> --revision <revision-vừa-đọc>."
+            ]
+        lines += [
+            "Chỉ làm task này, kiểm tra đúng phạm vi, cập nhật evidence/registry. Chạy render/check và sync GitHub khi có quyền; cuối chat trả prompt mới từ docs/handoffs/NEXT.md."
+        ]
     else:
         pending = [t for t in state["tasks"] if t["status"] != "done"]
         if pending:
-            lines += ["Không có task sẵn sàng. Đọc blockers/dependencies, báo điều kiện cần giải quyết; không tự đánh dấu done hoặc chiếm task."]
-            lines += [f"{t['id']}: {t.get('blocked_reason', 'waiting for dependencies')} — {t.get('next_action', 'check dependency graph')}" for t in pending]
+            lines += [
+                "Không có task sẵn sàng. Đọc blockers/dependencies, báo điều kiện cần giải quyết; không tự đánh dấu done hoặc chiếm task."
+            ]
+            lines += [
+                f"{t['id']}: {t.get('blocked_reason', 'waiting for dependencies')} — {t.get('next_action', 'check dependency graph')}"
+                for t in pending
+            ]
         else:
-            lines += ["Toàn bộ task hiện tại đã xong. Báo kết quả và chờ yêu cầu mới; không tự tạo phạm vi tiếp theo."]
+            lines += [
+                "Toàn bộ task hiện tại đã xong. Báo kết quả và chờ yêu cầu mới; không tự tạo phạm vi tiếp theo."
+            ]
     result["docs/handoffs/NEXT.md"] = "\n".join(lines + ["```", ""])
     return result
 
@@ -180,7 +207,10 @@ def render(state, root):
         write_text(root / path, content)
     task = next_task(state)
     if task and (root / ".specify").is_dir():
-        write_json(root / ".specify/feature.json", {"feature_directory": Path(task["spec"]).parent.as_posix()})
+        write_json(
+            root / ".specify/feature.json",
+            {"feature_directory": Path(task["spec"]).parent.as_posix()},
+        )
 
 
 def check_artifacts(state, root):
@@ -207,9 +237,15 @@ def transition(state, root, action, task_id, *, revision=None, owner=None, branc
         if task["status"] not in ACTIVE or task["owner"] != owner or task["branch"] != branch:
             raise StateError("Active task owner/branch mismatch")
         if action == "complete":
-            task.update(status="done", **{key: fields.get(key) for key in ("evidence", "checks", "summary")})
+            task.update(
+                status="done", **{key: fields.get(key) for key in ("evidence", "checks", "summary")}
+            )
         else:
-            task.update(status="blocked", blocked_reason=fields.get("reason"), next_action=fields.get("next_action"))
+            task.update(
+                status="blocked",
+                blocked_reason=fields.get("reason"),
+                next_action=fields.get("next_action"),
+            )
     elif action == "resume":
         if task["status"] != "blocked":
             raise StateError("Only a blocked task can be resumed")
@@ -253,7 +289,10 @@ def main():
             cmd.add_argument("--revision", type=int, required=True)
         if command != "resume":
             cmd.add_argument("--owner", required=True)
-        for field in ({"complete": ("evidence", "checks", "summary"), "block": ("reason", "next-action")}.get(command, ())):
+        for field in {
+            "complete": ("evidence", "checks", "summary"),
+            "block": ("reason", "next-action"),
+        }.get(command, ()):
             cmd.add_argument("--" + field, required=True)
     cmd = sub.add_parser("add")
     cmd.add_argument("--file", required=True)
@@ -264,11 +303,20 @@ def main():
         validate(state, ROOT)
         if args.command == "check":
             check_artifacts(state, ROOT)
-            print(f"OK: {len(state['tasks'])} tasks, revision {state['revision']}; artifacts consistent")
+            print(
+                f"OK: {len(state['tasks'])} tasks, revision {state['revision']}; artifacts consistent"
+            )
         elif args.command == "status":
             print(f"Revision: {state['revision']}")
             for task in state["tasks"]:
-                print(f"{task['id']} [{lifecycle(task, state)}] {task['title']}" + (f" | owner={task['owner']} branch={task['branch']}" if task["status"] in ACTIVE else ""))
+                print(
+                    f"{task['id']} [{lifecycle(task, state)}] {task['title']}"
+                    + (
+                        f" | owner={task['owner']} branch={task['branch']}"
+                        if task["status"] in ACTIVE
+                        else ""
+                    )
+                )
             task = next_task(state)
             print(f"Next: {task['id'] if task else 'none; inspect blockers/completion'}")
         elif args.command == "render":
@@ -278,7 +326,9 @@ def main():
             if args.command == "add":
                 state = add_task(state, load_json(ROOT / args.file), ROOT, args.revision)
             else:
-                branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip()
+                branch = subprocess.check_output(
+                    ["git", "branch", "--show-current"], cwd=ROOT, text=True
+                ).strip()
                 if not branch:
                     raise StateError("Detached HEAD: select an appropriate branch first")
                 fields = vars(args).copy()

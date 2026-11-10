@@ -2,6 +2,8 @@
 
 Mở đúng `D:/MMO-Plus-UPI/mmo-workspace` trong Codex. Python 3.12 + GitHub CLI phục vụ quản lý task; ứng dụng vẫn dùng Rust/Tauri.
 
+Mọi task code/docs đọc `jailbreak/byPass/README.md` và `docs/CODE-STANDARDS.md`. byPass gọi engine composition nguyên bản ColdCoffee để chuẩn bị context; full source và home cài riêng giữ trong repo. Setup lần đầu: `scripts/setup-bypass.ps1` và `scripts/setup-quality.ps1`. Không suy rằng app/VM hoặc cấu hình Codex đang mở đã được thay đổi bởi bước này.
+
 ## Nguồn sự thật
 
 | Dữ liệu | Nơi quản lý |
@@ -21,7 +23,7 @@ Project là mirror: kéo thẻ trên GitHub không tự thay local. Muốn nhậ
 1. Đọc AGENTS/constitution; chạy `py -3.12 scripts/project.py status`.
 2. Đối chiếu revision của prompt. Task active có owner thì tiếp tục đúng bàn giao hoặc báo owner; không tự chiếm task. Đọc spec, plan, acceptance và evidence.
 3. Kiểm tra branch/dirty files; tạo branch cho công việc mới khi phù hợp, không chuyển branch làm mất việc khác.
-4. Claim với revision hiện tại: `py -3.12 scripts/project.py start T002 --owner chat-toolchain-20261110 --revision 2`. Owner là nhãn phiên không chứa thông tin riêng tư. Script từ chối stale revision/task chưa đủ dependencies/task khác active.
+4. Claim với revision vừa đọc ở status: `py -3.12 scripts/project.py start T002 --owner chat-toolchain-20261110 --revision <N>`. Thay `<N>` bằng revision hiện tại, không dùng số trong prompt cũ. Owner là nhãn phiên không chứa thông tin riêng tư. Script từ chối stale revision/task chưa đủ dependencies/task khác active.
 5. Chỉ làm task claim. Thêm task phát sinh vào registry, không giấu trong final.
 
 ## Kết thúc
@@ -36,6 +38,8 @@ py -3.12 scripts/github_sync.py --apply
 ```
 
 Chỉ `complete` khi acceptance đạt; script kiểm cấu trúc chứ không thay review chất lượng. Nếu dở giữ `in_progress`, cập nhật evidence và render để prompt tiếp tục đúng task. Nếu bị chặn: `project.py block <ID> --owner <owner> --reason "..." --next-action "..."`. Chỉ `resume <ID> --revision <N>` sau khi lý do được giải quyết. Không xem blocker là done.
+
+Python tooling thay đổi phải qua Ruff check/format và unit tests. Wrapper/profile thay đổi phải qua `node --test tests/bypass.test.cjs` và catalog check; trên sandbox cấm spawn dùng `--test-isolation=none`. Rust/TS lint/build nối thêm ở T003 sau khi có manifest, theo CODE-STANDARDS.
 
 Final copy khối prompt từ NEXT. Nó ưu tiên task active; hết việc sẵn sàng thì nêu blocker; xong hết thì nói đã hết task.
 

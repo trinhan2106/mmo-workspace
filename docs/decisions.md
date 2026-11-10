@@ -12,5 +12,7 @@ Khởi tạo 2026-11-10, Asia/Bangkok.
 | ADR-006 | Registry canonical, GitHub mirror, một active task | Giữ liên tục qua chat, không tuyên bố distributed lock |
 | ADR-007 | Spec Kit v1.3.3 local, Codex skills | Không global hooks/memory |
 | ADR-008 | Giữ repo Public; Project private | Chỉ code/docs/sample; không chuyển private research vào repo |
+| ADR-009 | Chuẩn code chung, file theo trách nhiệm, formatter/lint pin | CODE-STANDARDS + EditorConfig/Rustfmt/Prettier; Ruff cho tooling hiện có; không cắt file theo số dòng máy móc |
+| ADR-010 | byPass là entry phát triển project-local, giữ full ColdCoffee upstream | Theo yêu cầu bổ sung: source nguyên bản + Codex seat/bundle cài vào repo-local home; composition dùng engine gốc. Không đổi global AI config hoặc coi đây là model/VM mới |
 
 Chưa chốt: console nhúng hay cửa sổ riêng, guest OS/license, worker transport, thư viện automation/OAuth. Chỉ quyết định khi task có bằng chứng.

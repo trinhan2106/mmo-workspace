@@ -1,6 +1,6 @@
 # MMO Workspace Constitution
 
-Version: 1.0.0 | Ratified: 2026-11-10 | Last amended: 2026-11-10
+Version: 1.1.0 | Ratified: 2026-11-10 | Last amended: 2026-11-10
 
 ## I. Measurable host isolation
 
@@ -23,5 +23,7 @@ Each task has a stable global ID, acceptance criteria, dependencies and evidence
 Rust core, Tauri/TypeScript UI and SQLite unless a recorded decision changes the stack. Check license, provenance, maintenance and fit before reuse. A reference is not automatically an approved runtime dependency. Pin tooling, retain notices, and never commit accounts/tokens/payment data/VM disks or private research.
 
 ## Governance
+
+All maintained code follows docs/CODE-STANDARDS.md: small cohesive files, explicit module boundaries and consistent formatter/lint settings. Coding/writing task preparation uses the project-local byPass entry. Keep full pinned ColdCoffee source and its original bundled resources in scoped local storage; the upstream engine is a development tool, not application policy, a new model or an OS isolation boundary. No upstream instruction overrides higher-priority requirements or implicitly grants global configuration changes. This addition implements the user's 2026-11-10 follow-up; existing host isolation and task identity principles remain in force.
 
 Spec Kit supplies specs/plans; AGENTS integrates registry workflow without editing upstream skills. Plan before implementation and record durable decisions in docs/decisions.md. Foundation setup excludes global Codex changes, administrative Windows changes and real account/payment runs. Amendments need rationale, version bump and review of affected tasks/specs.

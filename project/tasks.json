@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 2,
+  "revision": 11,
   "tasks": [
     {
       "id": "T001",
@@ -30,7 +30,8 @@
       "title": "Read-only Windows and Rust/Tauri toolchain preflight",
       "status": "todo",
       "depends_on": [
-        "T001"
+        "T001",
+        "T017"
       ],
       "spec": "specs/001-workspace-foundation/spec.md",
       "plan": "specs/001-workspace-foundation/plan.md",
@@ -315,6 +316,62 @@
         "Clean suitable Windows-machine test evidence; disclose guest license/signing costs if applicable",
         "Backup/update/uninstall and limitations documented; platform discovery not misrepresented as completed modules"
       ]
+    },
+    {
+      "id": "T017",
+      "title": "Consistent coding standards and project-local byPass profiles",
+      "status": "done",
+      "depends_on": [
+        "T001"
+      ],
+      "spec": "specs/002-coding-rules-bypass/spec.md",
+      "plan": "specs/002-coding-rules-bypass/plan.md",
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007"
+      ],
+      "acceptance": [
+        "Shared code standard and editor/formatter settings are loaded by AGENTS and handoff",
+        "Pinned gpt6-Astra source exists under ignored jailbreak folder, with provenance and actual behavior documented",
+        "Original composition verified with project profiles; full bundle installation result recorded honestly and unresolved work tracked separately in T018",
+        "Relevant checks pass; registry/GitHub mirror and next T002 prompt updated"
+      ],
+      "owner": "chat-rules-bypass-20261110",
+      "branch": "chore/project-foundation",
+      "evidence": "docs/handoffs/T017.md",
+      "checks": "23 Python + 3 Node tests; Ruff/Prettier; skill/catalog checks; original composition passed; full install FAILED and tracked T018",
+      "summary": "Added shared coding standards, full upstream source/dependencies and original byPass composition; complete bundle remains blocked by Defender in T018"
+    },
+    {
+      "id": "T018",
+      "title": "Assess complete ColdCoffee bundle inside the prepared guest VM",
+      "status": "blocked",
+      "depends_on": [
+        "T009",
+        "T017"
+      ],
+      "spec": "specs/002-coding-rules-bypass/spec.md",
+      "plan": "specs/002-coding-rules-bypass/plan.md",
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-007"
+      ],
+      "acceptance": [
+        "Prepare a dedicated guest with no real credentials or broad host shares; preserve full source and licenses",
+        "Investigate Defender detections in bundled reference samples without disabling protection or excluding files to obtain a pass",
+        "Every originally planned resource verifies in the authorized suitable guest before claiming full deployment; unresolved protection blocks remain blocked",
+        "Do not activate a partial installation or claim that the current Codex session has switched to upstream instructions"
+      ],
+      "blocked_reason": "Defender blocked bundled samples during full seat install; no project guest has been accepted yet",
+      "next_action": "Complete T009 guest boundary acceptance, then reassess the original full bundle with protection intact; preserve local failure evidence until resolved",
+      "evidence": "docs/handoffs/T018.md"
     }
   ]
 }

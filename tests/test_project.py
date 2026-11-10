@@ -1,13 +1,16 @@
 import copy
-from pathlib import Path
-import sys
 import shutil
+import sys
 import unittest
 import uuid
+from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-import project
 import github_sync
+import repo_io
+
+import project
 
 
 class LifecycleTests(unittest.TestCase):
@@ -18,35 +21,63 @@ class LifecycleTests(unittest.TestCase):
         # TemporaryDirectory. Inherit the workspace ACL for fixture directories.
         self.root = temp_root / ("case-" + uuid.uuid4().hex)
         self.root.mkdir()
+
         def cleanup():
             if not self.root.resolve().is_relative_to(temp_root.resolve()):
                 raise RuntimeError("Fixture cleanup target escaped test workspace")
             shutil.rmtree(self.root)
+
         self.addCleanup(cleanup)
         for name in ("specs/001-test/spec.md", "specs/001-test/plan.md", "docs/handoffs/T001.md"):
             project.write_text(self.root / name, "# Fixture\nFR-001: acceptance evidence\n")
-        task = {"id": "T001", "title": "First", "status": "todo", "depends_on": [],
-                "spec": "specs/001-test/spec.md", "plan": "specs/001-test/plan.md",
-                "requirements": ["FR-001"], "acceptance": ["Fixture passes"]}
+        task = {
+            "id": "T001",
+            "title": "First",
+            "status": "todo",
+            "depends_on": [],
+            "spec": "specs/001-test/spec.md",
+            "plan": "specs/001-test/plan.md",
+            "requirements": ["FR-001"],
+            "acceptance": ["Fixture passes"],
+        }
         second = dict(copy.deepcopy(task), id="T002", title="Second", depends_on=["T001"])
         self.state = {"schema_version": 1, "revision": 1, "tasks": [task, second]}
 
     def start(self, task="T001", state=None, **kwargs):
-        return project.transition(state or self.state, self.root, "start", task,
-                                  owner="chat-a", branch="feature-a", revision=1, **kwargs)
+        return project.transition(
+            state or self.state,
+            self.root,
+            "start",
+            task,
+            owner="chat-a",
+            branch="feature-a",
+            revision=1,
+            **kwargs,
+        )
 
     def test_dependency_order_and_completion_select_next(self):
         self.assertEqual(project.next_task(self.state)["id"], "T001")
         state = self.start()
-        state = project.transition(state, self.root, "complete", "T001", owner="chat-a", branch="feature-a",
-                                   evidence="docs/handoffs/T001.md", checks="fixture: passed", summary="Implemented")
+        state = project.transition(
+            state,
+            self.root,
+            "complete",
+            "T001",
+            owner="chat-a",
+            branch="feature-a",
+            evidence="docs/handoffs/T001.md",
+            checks="fixture: passed",
+            summary="Implemented",
+        )
         self.assertEqual(state["revision"], 3)
         self.assertEqual(project.next_task(state)["id"], "T002")
         self.assertEqual(self.state["revision"], 1)
 
     def test_start_rejects_stale_prompt(self):
         with self.assertRaisesRegex(project.StateError, "Stale"):
-            project.transition(self.state, self.root, "start", "T001", owner="chat", branch="x", revision=0)
+            project.transition(
+                self.state, self.root, "start", "T001", owner="chat", branch="x", revision=0
+            )
 
     def test_start_rejects_unfinished_dependencies(self):
         with self.assertRaisesRegex(project.StateError, "not ready"):
@@ -55,19 +86,35 @@ class LifecycleTests(unittest.TestCase):
     def test_second_chat_cannot_claim_or_complete_first(self):
         state = self.start()
         with self.assertRaisesRegex(project.StateError, "active"):
-            project.transition(state, self.root, "start", "T002", owner="chat-b", branch="x", revision=2)
+            project.transition(
+                state, self.root, "start", "T002", owner="chat-b", branch="x", revision=2
+            )
         with self.assertRaisesRegex(project.StateError, "mismatch"):
-            project.transition(state, self.root, "complete", "T001", owner="chat-b", branch="feature-a")
+            project.transition(
+                state, self.root, "complete", "T001", owner="chat-b", branch="feature-a"
+            )
 
     def test_wrong_branch_cannot_complete(self):
         with self.assertRaisesRegex(project.StateError, "mismatch"):
-            project.transition(self.start(), self.root, "complete", "T001", owner="chat-a", branch="different")
+            project.transition(
+                self.start(), self.root, "complete", "T001", owner="chat-a", branch="different"
+            )
 
     def test_completion_requires_real_evidence_and_checks(self):
-        for fields in ({"evidence": "missing.md", "checks": "passed", "summary": "done"},
-                       {"evidence": "docs/handoffs/T001.md", "checks": "", "summary": "done"}):
+        for fields in (
+            {"evidence": "missing.md", "checks": "passed", "summary": "done"},
+            {"evidence": "docs/handoffs/T001.md", "checks": "", "summary": "done"},
+        ):
             with self.assertRaises(project.StateError):
-                project.transition(self.start(), self.root, "complete", "T001", owner="chat-a", branch="feature-a", **fields)
+                project.transition(
+                    self.start(),
+                    self.root,
+                    "complete",
+                    "T001",
+                    owner="chat-a",
+                    branch="feature-a",
+                    **fields,
+                )
 
     def test_duplicate_missing_and_cycle_are_rejected(self):
         bad_states = []
@@ -83,8 +130,16 @@ class LifecycleTests(unittest.TestCase):
                 project.validate(bad, self.root)
 
     def test_blocked_handoff_and_resume(self):
-        state = project.transition(self.start(), self.root, "block", "T001", owner="chat-a", branch="feature-a",
-                                   reason="SDK missing", next_action="Operator installs SDK")
+        state = project.transition(
+            self.start(),
+            self.root,
+            "block",
+            "T001",
+            owner="chat-a",
+            branch="feature-a",
+            reason="SDK missing",
+            next_action="Operator installs SDK",
+        )
         self.assertIsNone(project.next_task(state))
         self.assertIn("SDK missing", project.artifacts(state)["docs/handoffs/NEXT.md"])
         state = project.transition(state, self.root, "resume", "T001", revision=3)
@@ -118,6 +173,43 @@ class LifecycleTests(unittest.TestCase):
                 raise RuntimeError("fixture")
         self.assertFalse((self.root / ".work/registry.lock").exists())
 
+    def test_atomic_write_retries_transient_windows_sharing_lock(self):
+        target = self.root / "state.json"
+        project.write_text(target, "before")
+        real_replace = repo_io.os.replace
+        attempts = []
+
+        def replace(source, destination):
+            attempts.append(source)
+            if len(attempts) == 1:
+                error = PermissionError("fixture sharing lock")
+                error.winerror = 32
+                raise error
+            real_replace(source, destination)
+
+        with (
+            patch.object(repo_io.os, "replace", side_effect=replace),
+            patch.object(repo_io.time, "sleep"),
+        ):
+            project.write_text(target, "after")
+        self.assertEqual(target.read_text(encoding="utf-8"), "after")
+        self.assertEqual(len(attempts), 2)
+
+    def test_atomic_write_preserves_previous_file_on_persistent_denial(self):
+        target = self.root / "state.json"
+        project.write_text(target, "before")
+        error = PermissionError("fixture persistent denial")
+        error.winerror = 5
+        with (
+            patch.object(repo_io.os, "replace", side_effect=error) as replace,
+            patch.object(repo_io.time, "sleep"),
+        ):
+            with self.assertRaises(PermissionError):
+                project.write_text(target, "after")
+        self.assertEqual(replace.call_count, 5)
+        self.assertEqual(target.read_text(encoding="utf-8"), "before")
+        self.assertEqual(list(self.root.glob(".write-*")), [])
+
     def test_paths_cannot_escape_repository(self):
         bad = copy.deepcopy(self.state)
         bad["tasks"][0]["spec"] = "../private.md"
@@ -141,15 +233,26 @@ class RemoteIdentityTests(unittest.TestCase):
 
     def test_duplicate_remote_ids_stop_sync(self):
         with self.assertRaisesRegex(project.StateError, "Duplicate"):
-            github_sync.index_issues([{"number": n, "title": "[T001] Same", "body": ""} for n in (1, 2)])
+            github_sync.index_issues(
+                [{"number": n, "title": "[T001] Same", "body": ""} for n in (1, 2)]
+            )
 
     def test_conflicting_title_marker_stop_sync(self):
         with self.assertRaisesRegex(project.StateError, "conflicting"):
-            github_sync.index_issues([{"number": 1, "title": "[T001] A", "body": "<!-- mmo-workspace-task:T002 -->"}])
+            github_sync.index_issues(
+                [{"number": 1, "title": "[T001] A", "body": "<!-- mmo-workspace-task:T002 -->"}]
+            )
 
     def test_pull_requests_and_references_do_not_become_tasks(self):
-        self.assertEqual(github_sync.index_issues([{"number": 1, "title": "Discuss T001", "body": "depends on T002"},
-                                                 {"number": 2, "title": "[T001] PR", "pull_request": {}}]), {})
+        self.assertEqual(
+            github_sync.index_issues(
+                [
+                    {"number": 1, "title": "Discuss T001", "body": "depends on T002"},
+                    {"number": 2, "title": "[T001] PR", "pull_request": {}},
+                ]
+            ),
+            {},
+        )
 
     def test_ids_above_999_supported(self):
         index = github_sync.index_issues([{"number": 1, "title": "[T1000] A", "body": ""}])
@@ -159,13 +262,20 @@ class RemoteIdentityTests(unittest.TestCase):
     def test_notes_outside_managed_section_preserved(self):
         new = github_sync.BEGIN + "\nnew\n" + github_sync.END
         old = "human note\n" + github_sync.BEGIN + "\nold\n" + github_sync.END + "\nkeep this"
-        self.assertEqual(github_sync.replace_managed(old, new), "human note\n" + new + "\nkeep this")
+        self.assertEqual(
+            github_sync.replace_managed(old, new), "human note\n" + new + "\nkeep this"
+        )
         with self.assertRaises(project.StateError):
             github_sync.replace_managed(github_sync.BEGIN, new)
 
     def test_remote_is_strictly_scoped(self):
-        github_sync.verify_remote("https://github.com/trinhan2106/mmo-workspace.git", github_sync.REPOSITORY)
-        for remote in ("https://github.com/other/repo.git", "https://evil.example/trinhan2106/mmo-workspace.git"):
+        github_sync.verify_remote(
+            "https://github.com/trinhan2106/mmo-workspace.git", github_sync.REPOSITORY
+        )
+        for remote in (
+            "https://github.com/other/repo.git",
+            "https://evil.example/trinhan2106/mmo-workspace.git",
+        ):
             with self.assertRaises(project.StateError):
                 github_sync.verify_remote(remote, github_sync.REPOSITORY)
 

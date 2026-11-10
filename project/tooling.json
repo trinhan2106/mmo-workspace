@@ -7,8 +7,19 @@
     "integration": "codex",
     "script": "ps",
     "events": false,
-    "extensions": ["github"]
+    "extensions": [
+      "github"
+    ]
   },
   "repo_tooling_python": "3.12",
-  "app_stack": ["Rust", "Tauri 2", "TypeScript", "SQLite"]
+  "app_stack": [
+    "Rust",
+    "Tauri 2",
+    "TypeScript",
+    "SQLite"
+  ],
+  "quality": {
+    "ruff": "0.17.4",
+    "prettier": "3.9.10"
+  }
 }

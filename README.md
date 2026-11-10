@@ -8,6 +8,7 @@
 - [Tasks](specs/001-workspace-foundation/tasks.md) · [GitHub Project](https://github.com/users/trinhan2106/projects/4) (private)
 - [Spec](specs/001-workspace-foundation/spec.md) · [Plan](specs/001-workspace-foundation/plan.md)
 - [Quyết định](docs/decisions.md) · [Nguồn tái sử dụng](references/README.md)
+- [Chuẩn code chung](docs/CODE-STANDARDS.md) · [byPass / nguồn ColdCoffee local](jailbreak/byPass/README.md) — composition hoạt động; full bundle đang bị chặn ở T018
 
 ```powershell
 py -3.12 scripts/project.py status

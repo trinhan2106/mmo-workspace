@@ -1,0 +1,4 @@
+interface:
+  display_name: "byPass"
+  short_description: "Entry code và văn phong riêng cho MMO Workspace"
+  default_prompt: "Dùng $bypass để chuẩn bị task MMO Workspace qua profile code hoặc writing, giữ chuẩn chung và kiểm tra kết quả."

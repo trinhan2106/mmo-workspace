@@ -1,6 +1,6 @@
 # Tasks — generated from project/tasks.json
 
-Registry revision: 2. Do not edit this checklist directly.
+Registry revision: 11. Do not edit this checklist directly.
 
 - [x] T001 Project foundation, Spec Kit and cross-chat workflow
   - State: Done; dependencies: none; requirements: FR-001, FR-002
@@ -10,7 +10,7 @@ Registry revision: 2. Do not edit this checklist directly.
   - Acceptance: Reference catalog and fresh-checkout bootstrap documented
   - Evidence: `docs/handoffs/T001.md`
 - [ ] T002 Read-only Windows and Rust/Tauri toolchain preflight
-  - State: Ready; dependencies: T001; requirements: FR-003, FR-004
+  - State: Ready; dependencies: T001, T017; requirements: FR-003, FR-004
   - Acceptance: Record Rust/Cargo, MSVC/linker, Windows SDK, WebView2 and Node availability without secrets
   - Acceptance: Record virtualization/edition/RAM facts or permission-denied as unknown
   - Acceptance: Document exact missing prerequisites, install choices/cost and first UI-test command; no admin changes or reboot
